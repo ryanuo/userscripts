@@ -1,0 +1,16 @@
+{
+  "type": "module",
+  "packageManager": "pnpm@10.12.4",
+  "scripts": {
+    "build": "unbuild && esno build-userscript.ts",
+    "prepack": "unbuild && esno build-userscript.ts"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^5.2.0",
+    "@types/node": "^20.8.8",
+    "eslint": "^9.33.0",
+    "esno": "^4.8.0",
+    "typescript": "^5.5.3",
+    "unbuild": "^3.6.0"
+  }
+}
