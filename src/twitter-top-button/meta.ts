@@ -1,4 +1,4 @@
-const meta = {
+const meta: GM_Meta = {
   'name': 'Twitter / X 回到顶部按钮',
   'namespace': 'twitter-top-button',
   'version': '1.0.1',

@@ -17,7 +17,6 @@ function extractPageText(): string {
 
 // ========== 调用 OpenAI API ==========
 function callOpenAI(prompt: string, callback: (err: Error | null, text?: string) => void) {
-  // @ts-expect-error GM_xmlhttpRequest is a Tampermonkey API, not in TS DOM lib
   GM_xmlhttpRequest({
     method: 'POST',
     url: `${OPENAI_API_BASE_URL}/v1/chat/completions`,

@@ -1,4 +1,4 @@
-export const meta = {
+export default {
   'name': '页面描述生成器',
   'namespace': 'page-description-generator',
   'version': '1.1.1',
@@ -9,4 +9,4 @@ export const meta = {
   'connect': ['api.openai.com', 'api.kkyyxx.xyz'],
   'run-at': 'document-idle',
   'license': 'apache-2.0',
-}
+} as GM_Meta
