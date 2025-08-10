@@ -60,7 +60,7 @@ export function genReadme(distDir: string, rootDir: string) {
 
   const md = `# 🛠 Userscripts 列表
 
-共收录 **${fileInfos.length} 个脚本**，总大小约 **${totalSize}**  
+共收录 **${fileInfos.length} 个脚本**，总大小约 **${totalSize}**
 > 本表自动生成于 ${formatDate(new Date())} ，请勿手动修改。
 
 | 文件名 | 描述 | 大小 | 更新时间 | 下载 | 预览 |
