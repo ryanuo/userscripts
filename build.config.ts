@@ -9,4 +9,9 @@ export default {
   outDir: 'scripts',
   declaration: false,
   clean: true,
+  rollup: {
+    esbuild: {
+      charset: 'utf8',
+    },
+  },
 }
