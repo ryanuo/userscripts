@@ -30,4 +30,3 @@ jobs:
         with:
           commit_message: 'chore: auto build userscripts and docs [ci skip]'
           branch: main
-          file_pattern: '**/*'
