@@ -30,4 +30,4 @@ jobs:
         with:
           commit_message: 'chore: auto build userscripts and docs [ci skip]'
           branch: main
-          file_pattern: 'scripts/*.user.js scripts/index.html README.md'
+          file_pattern: '**/*'
