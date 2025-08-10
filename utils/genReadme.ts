@@ -84,7 +84,7 @@ export function genReadme(distDir: string, rootDir: string) {
 
   // 生成表格行
   const tableRows = fileInfos.map(f =>
-    `| ${f.name} | ${f.desc.replace(/\n+/g, ' ')} | ${badge('version', f.version, 'informational')} | ${f.sizeStr} | ${f.mtimeStr} | [下载](./scripts/${f.name}) | [预览](./scripts/${f.name}) |`,
+    `| ${f.name} | ${f.desc.replace(/\n+/g, ' ')} | ${badge('v', f.version, 'informational')} | ${f.sizeStr} | ${f.mtimeStr} | [下载](./scripts/${f.name}) | [预览](./scripts/${f.name}) |`,
   ).join('\n')
 
   // 按日期分组生成最近更新列表
