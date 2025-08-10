@@ -11,7 +11,8 @@
     "dev": "pnpm dlx serve",
     "lint": "eslint .",
     "fix": "eslint . --fix",
-    "release": "bumpp"
+    "release": "bumpp",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^5.2.0",
