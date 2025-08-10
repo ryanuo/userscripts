@@ -1,4 +1,10 @@
 // eslint.config.mjs
 import antfu from '@antfu/eslint-config'
 
-export default antfu()
+export default antfu({
+  languageOptions: {
+    globals: {
+      GM_xmlhttpRequest: 'readonly',
+    },
+  },
+})
