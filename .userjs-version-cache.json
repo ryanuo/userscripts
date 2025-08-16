@@ -1,8 +1,8 @@
 {
-  "page-description-generator.user.js": "",
-  "page-description-generator.user.js__mtime": "2025-08-16T07:24:25.724Z",
-  "twitter-top-button.user.js": "",
-  "twitter-top-button.user.js__mtime": "2025-08-16T07:24:25.919Z",
-  "devtools-full-function-protection.user.js": "",
-  "devtools-full-function-protection.user.js__mtime": "2025-08-16T07:24:25.392Z"
+  "page-description-generator.user.js": "1.1.1",
+  "page-description-generator.user.js__mtime": "2025-08-16T07:32:02.615Z",
+  "twitter-top-button.user.js": "1.0.1",
+  "twitter-top-button.user.js__mtime": "2025-08-16T07:32:02.799Z",
+  "devtools-full-function-protection.user.js": "2.0",
+  "devtools-full-function-protection.user.js__mtime": "2025-08-16T07:32:02.297Z"
 }
