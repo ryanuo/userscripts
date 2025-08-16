@@ -32,9 +32,9 @@ export function genReadme(distDir: string, rootDir: string) {
     const base = f.replace(/\.user\.js$/, '')
     const meta: { version?: string } = {}
     try {
-      const m = readMetaField(rootDir, 'src', 'version')
+      const m = readMetaField(path.join(rootDir, 'src'), base, 'version')
       if (m)
-        meta.version = m
+        meta.version = m as string
     }
     catch { }
     const version = meta.version || ''

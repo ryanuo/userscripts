@@ -1,25 +1,27 @@
 import fs from 'node:fs'
 import path from 'node:path'
 
-// 通用接口，增强类型安全
+// 通用接口
 interface MetaObject {
   [key: string]: string | number | boolean | null | undefined
 }
 
 /**
- * 读取 meta.ts 中指定字段的值
+ * 解析 meta.ts 并返回指定字段的原始类型
  * @param srcDir 源目录
  * @param name 子目录
  * @param field 字段名
- * @returns 字段值（字符串）
  */
-export function readMetaField(srcDir: string, name: string, field: string): string {
+export function readMetaField(srcDir: string, name: string, field: string): string | number | boolean | null {
   const metaPath = path.join(srcDir, name, 'meta.ts')
   if (!fs.existsSync(metaPath))
     return ''
 
   const content = fs.readFileSync(metaPath, 'utf8')
-  const lines = content.split(/\r?\n/).map(l => l.replace(/\/\/.*$/, '').trim()).filter(Boolean)
+  const lines = content
+    .split(/\r?\n/)
+    .map(l => l.replace(/\/\/.*$/, '').trim())
+    .filter(Boolean)
 
   const obj: MetaObject = {}
   let insideExport = false
@@ -33,10 +35,12 @@ export function readMetaField(srcDir: string, name: string, field: string): stri
         insideExport = true
       continue
     }
+
+    // 检测对象结束
     if (line.includes('}'))
       break
 
-    // 多行反引号处理
+    // 多行反引号
     if (multiLineQuote) {
       multiLineValue.push(line)
       if (line.endsWith(multiLineQuote)) {
@@ -48,13 +52,13 @@ export function readMetaField(srcDir: string, name: string, field: string): stri
       continue
     }
 
-    // 匹配 key: value
+    // 匹配 key: value，支持单/双引号和中划线
     // eslint-disable-next-line regexp/no-super-linear-backtracking
-    const kvMatch = line.match(/^(\w+)\s*:\s*(.+?),?$/)
+    const kvMatch = line.match(/^['"]?([\w-]+)['"]?\s*:\s*(.+?),?$/)
     if (!kvMatch)
       continue
 
-    const [_, key, rawValue] = kvMatch
+    const [, key, rawValue] = kvMatch
     const value = rawValue.trim()
 
     // 多行反引号开始
@@ -68,7 +72,7 @@ export function readMetaField(srcDir: string, name: string, field: string): stri
     obj[key] = parseValue(value)
   }
 
-  return typeof obj[field] === 'string' ? obj[field] : String(obj[field] ?? '')
+  return obj[field] ?? ''
 }
 
 /**
@@ -92,8 +96,9 @@ function parseValue(valueStr: string): string | number | boolean | null {
 }
 
 /**
- * 简单获取 description 字段
+ * 简单获取 description
  */
 export function readMetaDescription(srcDir: string, name: string): string {
-  return readMetaField(srcDir, name, 'description')
+  const val = readMetaField(srcDir, name, 'description')
+  return typeof val === 'string' ? val : String(val ?? '')
 }
