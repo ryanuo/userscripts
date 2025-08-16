@@ -2,7 +2,7 @@ import type { ScriptVersionCache } from './versionCache'
 import fs from 'node:fs'
 
 import * as path from 'node:path'
-import { readMetaDescription } from './readMetaDescription'
+import { readMetaDescriptionSync } from './readMetaDescription'
 import { readVersionCache, writeVersionCache } from './versionCache'
 
 function formatSize(bytes: number): string {
@@ -64,7 +64,7 @@ export function genReadme(distDir: string, rootDir: string) {
       mtime,
       mtimeStr: formatDate(mtime),
       day: formatDay(mtime),
-      desc: readMetaDescription(path.join(rootDir, 'src'), base) || '（无描述）',
+      desc: readMetaDescriptionSync(path.join(rootDir, 'src'), base) || '（无描述）',
       version,
     }
   }).sort((a, b) => a.name.localeCompare(b.name, 'en'))
