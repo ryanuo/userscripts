@@ -2,7 +2,7 @@ import type { ScriptVersionCache } from './versionCache'
 import fs from 'node:fs'
 
 import * as path from 'node:path'
-import { readMetaDescriptionSync } from './readMetaDescription'
+import { readMetaDescription, readMetaField } from './readMetaDescription'
 import { readVersionCache, writeVersionCache } from './versionCache'
 
 function formatSize(bytes: number): string {
@@ -32,16 +32,11 @@ export function genReadme(distDir: string, rootDir: string) {
     const base = f.replace(/\.user\.js$/, '')
     const meta: { version?: string } = {}
     try {
-      const metaPath = path.join(rootDir, 'src', base, 'meta.ts')
-      if (fs.existsSync(metaPath)) {
-        const content = fs.readFileSync(metaPath, 'utf8')
-        // 简单提取 version
-        const m = content.match(/['"]version['"]\s*:\s*['"]([^'"]+)['"]/)
-        if (m)
-          meta.version = m[1]
-      }
+      const m = readMetaField(rootDir, 'src', 'version')
+      if (m)
+        meta.version = m
     }
-    catch {}
+    catch { }
     const version = meta.version || ''
     // 只有版本变化才更新时间
     let mtime = stat.mtime
@@ -64,7 +59,7 @@ export function genReadme(distDir: string, rootDir: string) {
       mtime,
       mtimeStr: formatDate(mtime),
       day: formatDay(mtime),
-      desc: readMetaDescriptionSync(path.join(rootDir, 'src'), base) || '（无描述）',
+      desc: readMetaDescription(path.join(rootDir, 'src'), base) || '（无描述）',
       version,
     }
   }).sort((a, b) => a.name.localeCompare(b.name, 'en'))

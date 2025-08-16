@@ -1,4 +1,4 @@
-const meta: GM_Meta = {
+export default {
   name: 'DevTools 全功能防护',
   namespace: 'devtools-full-function-protection',
   version: '2.0',
@@ -8,6 +8,4 @@ const meta: GM_Meta = {
   grant: 'none',
   license: 'MIT',
   runAt: 'document-start',
-}
-
-export default meta
+} as GM_Meta

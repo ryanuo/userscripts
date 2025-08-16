@@ -1,4 +1,4 @@
-const meta: GM_Meta = {
+export default {
   'name': 'Twitter / X 回到顶部按钮',
   'namespace': 'twitter-top-button',
   'version': '1.0.1',
@@ -10,6 +10,4 @@ const meta: GM_Meta = {
   'license': 'apache-2.0',
   'updateURL': 'https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/twitter-top-button.user.js',
   'downloadURL': 'https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/twitter-top-button.user.js',
-}
-
-export default meta
+} as GM_Meta
