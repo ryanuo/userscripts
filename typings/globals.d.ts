@@ -30,7 +30,6 @@ declare interface GM_Meta {
   'name': string
   'namespace': string
   'run-at'?: string
-  'runAt'?: string
   'version': string
   'connect'?: StringOrStringArray
   'updateURL'?: string
