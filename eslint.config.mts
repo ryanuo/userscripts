@@ -7,4 +7,8 @@ export default antfu({
       GM_xmlhttpRequest: 'readonly',
     },
   },
+  rules: {
+    'no-extend-native': 'off',
+    'no-console': 'off',
+  },
 })

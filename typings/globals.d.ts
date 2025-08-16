@@ -29,7 +29,8 @@ declare interface GM_Meta {
   'match': StringOrStringArray
   'name': string
   'namespace': string
-  'run-at': string
+  'run-at'?: string
+  'runAt'?: string
   'version': string
   'connect'?: StringOrStringArray
   'updateURL'?: string
