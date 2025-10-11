@@ -138,7 +138,7 @@ export function genIndexHtml(distDir: string, rootDir: string) {
 
 <body>
   <div class="container">
-    <a class="logo" href="https://github.com/ryanuo/userscripts-preview" target="_blank" rel="noopener noreferrer">
+    <a class="logo" href="https://github.com/ryanuo/userscripts" target="_blank" rel="noopener noreferrer">
       <img src="./favicon.ico" alt="GitHub stars">
     </a>
     </a>
