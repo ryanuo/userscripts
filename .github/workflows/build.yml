@@ -24,7 +24,9 @@ jobs:
       - name: Install dependencies
         run: pnpm install
       - name: Build userscripts
-        run: pnpm build
+        run: |
+          pnpm build
+          pnpm run fix
       - name: Commit and push changes
         uses: stefanzweifel/git-auto-commit-action@v5
         with:

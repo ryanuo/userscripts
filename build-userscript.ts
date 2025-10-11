@@ -30,12 +30,12 @@ let found = false;
         const code = fs.readFileSync(mjsPath, 'utf8')
         const metaStr = metaBlock(meta)
         await writeWrapped(metaStr, code, output)
-        // eslint-disable-next-line no-console
+
         console.log('UserScript 构建完成:', output)
         // 删除 .mjs 文件
         try {
           fs.unlinkSync(mjsPath)
-          // eslint-disable-next-line no-console
+
           console.log('已删除:', mjsPath)
         }
         catch (err) {
