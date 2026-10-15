@@ -102,6 +102,10 @@ const STYLE = `
   .sub { margin: 4px 0 0; font-size: 13.5px; color: var(--fg-soft); }
   .stats { display: flex; gap: 10px; }
   .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     min-width: 96px;
     padding: 10px 16px;
     border: 1px solid var(--line);
@@ -110,8 +114,8 @@ const STYLE = `
     box-shadow: var(--shadow-sm);
     text-align: center;
   }
-  .stat b { display: block; font-size: 17px; font-weight: 650; }
-  .stat span { font-size: 12px; color: var(--fg-soft); }
+  .stat b { display: block; font-size: 17px; font-weight: 650; line-height: 1.45; }
+  .stat span { font-size: 12px; color: var(--fg-soft); line-height: 1.5; }
 
   /* ---------- 工具条 ---------- */
   .toolbar {
@@ -178,7 +182,7 @@ const STYLE = `
   .card[hidden] { display: none; }
   .card-head {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }

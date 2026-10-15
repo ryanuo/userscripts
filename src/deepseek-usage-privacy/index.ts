@@ -17,6 +17,10 @@ const CSS = `
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  flex: 0 0 auto; /* flex 行里不被拉伸/压缩 */
+  align-self: center; /* flex 行里垂直居中 */
+  vertical-align: middle; /* inline 行里按中线对齐（默认 baseline 会让按钮掉下去） */
   width: 34px;
   height: 34px;
   padding: 0;

@@ -80,6 +80,10 @@
   .sub { margin: 4px 0 0; font-size: 13.5px; color: var(--fg-soft); }
   .stats { display: flex; gap: 10px; }
   .stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     min-width: 96px;
     padding: 10px 16px;
     border: 1px solid var(--line);
@@ -88,8 +92,8 @@
     box-shadow: var(--shadow-sm);
     text-align: center;
   }
-  .stat b { display: block; font-size: 17px; font-weight: 650; }
-  .stat span { font-size: 12px; color: var(--fg-soft); }
+  .stat b { display: block; font-size: 17px; font-weight: 650; line-height: 1.45; }
+  .stat span { font-size: 12px; color: var(--fg-soft); line-height: 1.5; }
 
   /* ---------- 工具条 ---------- */
   .toolbar {
@@ -156,7 +160,7 @@
   .card[hidden] { display: none; }
   .card-head {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 12px;
   }
@@ -279,7 +283,7 @@
       </a>
       <div class="stats">
         <div class="stat"><b>4</b><span>个脚本</span></div>
-        <div class="stat"><b>22.9 KB</b><span>总大小</span></div>
+        <div class="stat"><b>23.2 KB</b><span>总大小</span></div>
         <div class="stat"><b>2026-10-15</b><span>最近更新</span></div>
       </div>
     </header>
@@ -301,9 +305,9 @@
         <code class="file">deepseek-usage-privacy.user.js</code>
         <p class="desc">在 DeepSeek 开放平台用量页加一个「小眼睛」，一键把金额（充值余额、消费金额、图表 tooltip）显示为 ***，Alt+M 切换，状态本地记忆</p>
         <div class="metrics">
-          <span>6.6 KB</span>
+          <span>6.8 KB</span>
           <span class="dot"></span>
-          <span>2026-10-15 01:00</span>
+          <span>2026-10-15 09:07</span>
         </div>
         <div class="actions">
           <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/deepseek-usage-privacy.user.js" target="_blank" rel="noopener noreferrer">安装</a>
@@ -321,7 +325,7 @@
         <div class="metrics">
           <span>3.5 KB</span>
           <span class="dot"></span>
-          <span>2026-10-15 01:00</span>
+          <span>2026-10-15 09:07</span>
         </div>
         <div class="actions">
           <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/devtools-full-function-protection.user.js" target="_blank" rel="noopener noreferrer">安装</a>
@@ -339,7 +343,7 @@
         <div class="metrics">
           <span>8.8 KB</span>
           <span class="dot"></span>
-          <span>2026-10-15 01:00</span>
+          <span>2026-10-15 09:07</span>
         </div>
         <div class="actions">
           <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/page-description-generator.user.js" target="_blank" rel="noopener noreferrer">安装</a>
@@ -357,7 +361,7 @@
         <div class="metrics">
           <span>4.1 KB</span>
           <span class="dot"></span>
-          <span>2026-10-15 01:00</span>
+          <span>2026-10-15 09:07</span>
         </div>
         <div class="actions">
           <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/twitter-top-button.user.js" target="_blank" rel="noopener noreferrer">安装</a>
@@ -369,7 +373,7 @@
     <p class="empty" id="empty" hidden>没有匹配的脚本</p>
 
     <footer>
-      <span>本页由 <code>pnpm build</code> 自动生成于 2026-10-15 01:00</span>
+      <span>本页由 <code>pnpm build</code> 自动生成于 2026-10-15 09:07</span>
       <a href="https://github.com/ryanuo/userscripts" target="_blank" rel="noopener noreferrer">GitHub · ryanuo/userscripts</a>
     </footer>
   </div>
