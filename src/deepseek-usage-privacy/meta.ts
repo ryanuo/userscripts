@@ -1,8 +1,8 @@
 export default {
   'name': 'DeepSeek 用量页金额隐藏',
   'namespace': 'deepseek-usage-privacy',
-  'version': '1.0.0',
-  'description': '在 DeepSeek 开放平台用量页加一个「小眼睛」，一键遮挡所有金额（充值余额、消费金额、图表 tooltip），Alt+M 切换，状态本地记忆',
+  'version': '1.1.0',
+  'description': '在 DeepSeek 开放平台用量页加一个「小眼睛」，一键把金额（充值余额、消费金额、图表 tooltip）显示为 ***，Alt+M 切换，状态本地记忆',
   'author': 'ryanuo',
   'match': ['https://platform.deepseek.com/*'],
   'grant': 'none',

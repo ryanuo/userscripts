@@ -6,164 +6,402 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <link rel="icon" href="./favicon.ico">
   <style>
+  :root {
+    --bg: #f6f7f9;
+    --bg-soft: #eceef2;
+    --card: #ffffff;
+    --fg: #1f2328;
+    --fg-soft: #61697a;
+    --line: #e6e8ee;
+    --accent: #4f6ef7;
+    --accent-soft: #eaeefe;
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, .04), 0 1px 3px rgba(16, 24, 40, .06);
+    --shadow-lg: 0 12px 30px rgba(16, 24, 40, .10);
+  }
+  @media (prefers-color-scheme: dark) {
     :root {
-      --bg: #f9fafc;
-      --fg: #222;
-      --card-bg: #fff;
-      --accent: #1976d2;
-      --accent-light: #42a5f5;
-      --shadow: 0 2px 8px #0001;
+      --bg: #14161a;
+      --bg-soft: #1b1e24;
+      --card: #1c1f26;
+      --fg: #e9ebef;
+      --fg-soft: #98a1b0;
+      --line: #2a2f39;
+      --accent: #7b93ff;
+      --accent-soft: #232a44;
+      --shadow-sm: 0 1px 2px rgba(0, 0, 0, .3);
+      --shadow-lg: 0 12px 30px rgba(0, 0, 0, .45);
     }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        --bg: #181a1b;
-        --fg: #eee;
-        --card-bg: #23272e;
-        --shadow: 0 2px 12px #0005;
-      }
-    }
-    body {
-      margin: 0;
-      font-family: "Inter", system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--fg);
-      min-height: 100vh;
-      transition: background .3s, color .3s;
-    }
-    h1 {
-      text-align: center;
-      font-size: 2.2em;
-      font-weight: 700;
-      margin: 0 0 1em;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      letter-spacing: 0.5px;
-    }
-    .container {
-      max-width: 1080px;
-      margin: 0 auto;
-      padding: 1.5em 1.2em 3em;
-    }
-    .grid {
-      display: grid;
-      gap: 1.6em;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    }
-    .card {
-      background: var(--card-bg);
-      border-radius: 16px;
-      box-shadow: var(--shadow);
-      padding: 1.4em 1.2em 1.1em;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 0.6em;
-      transition: transform .2s ease, box-shadow .3s ease;
-    }
-    .card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 6px 20px #1976d233;
-    }
-    .filename {
-      font-size: 1.1em;
-      font-weight: 600;
-      word-break: break-all;
-    }
-    .meta {
-      font-size: 0.92em;
-      color: #777;
-    }
-    @media (prefers-color-scheme: dark) {
-      .meta { color: #aaa; }
-    }
-    .actions {
-      margin-top: 0.5em;
-      display: flex;
-      gap: 0.6em;
-    }
-    .btn {
-      flex: 1;
-      text-align: center;
-      padding: 0.5em 1em;
-      border-radius: 8px;
-      background: linear-gradient(90deg, var(--accent), var(--accent-light));
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      box-shadow: 0 2px 8px #1976d233;
-      transition: background .2s, transform .2s;
-    }
-    .btn:hover {
-      background: linear-gradient(90deg, #1565c0, var(--accent));
-      transform: translateY(-1px);
-    }
-    footer {
-      text-align: center;
-      margin-top: 3em;
-      font-size: 0.9em;
-      color: #888;
-    }
-    @media (max-width: 600px) {
-      h1 { font-size: 1.5em; }
-      .container { padding: 1em; }
-      .btn { font-size: 0.95em; }
-    }
-    .logo{
-      display: block;
-      text-align: center;
-    }
-    .logo img{
-      width: 80px;
-      height: 80px;
-      object-fit: contain;
-    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--fg);
+    font-family: "Inter", -apple-system, "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    transition: background .3s, color .3s;
+  }
+  a { color: inherit; }
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 6px; }
+  .page { max-width: 1120px; margin: 0 auto; padding: 40px 24px 32px; }
+
+  /* ---------- 顶部 ---------- */
+  .hero {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--line);
+  }
+  .brand { display: flex; align-items: center; gap: 16px; text-decoration: none; }
+  .brand img {
+    width: 56px;
+    height: 56px;
+    border-radius: 16px;
+    object-fit: contain;
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 6px;
+  }
+  h1 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: .2px;
+    background: linear-gradient(96deg, var(--accent), #8aa2ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  .sub { margin: 4px 0 0; font-size: 13.5px; color: var(--fg-soft); }
+  .stats { display: flex; gap: 10px; }
+  .stat {
+    min-width: 96px;
+    padding: 10px 16px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--card);
+    box-shadow: var(--shadow-sm);
+    text-align: center;
+  }
+  .stat b { display: block; font-size: 17px; font-weight: 650; }
+  .stat span { font-size: 12px; color: var(--fg-soft); }
+
+  /* ---------- 工具条 ---------- */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin: 24px 0 18px;
+  }
+  .search {
+    position: relative;
+    flex: 1;
+    max-width: 380px;
+  }
+  .search svg {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--fg-soft);
+  }
+  .search input {
+    width: 100%;
+    height: 40px;
+    padding: 0 14px 0 36px;
+    font: inherit;
+    font-size: 14px;
+    color: var(--fg);
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    box-shadow: var(--shadow-sm);
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .search input::placeholder { color: var(--fg-soft); opacity: .8; }
+  .search input:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+  .count { font-size: 13px; color: var(--fg-soft); }
+
+  /* ---------- 卡片 ---------- */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 18px;
+  }
+  .card {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 20px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    box-shadow: var(--shadow-sm);
+    transition: transform .2s ease, box-shadow .25s ease, border-color .2s ease;
+  }
+  .card:hover {
+    transform: translateY(-3px);
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lg);
+  }
+  .card[hidden] { display: none; }
+  .card-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .card-head h2 {
+    margin: 0;
+    font-size: 16.5px;
+    font-weight: 650;
+    line-height: 1.35;
+  }
+  .tag {
+    flex: 0 0 auto;
+    padding: 1px 9px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 18px;
+    color: var(--accent);
+    background: var(--accent-soft);
+    border-radius: 999px;
+  }
+  .file {
+    align-self: flex-start;
+    max-width: 100%;
+    padding: 2px 8px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 12px;
+    color: var(--fg-soft);
+    background: var(--bg-soft);
+    border-radius: 6px;
+    word-break: break-all;
+  }
+  .desc {
+    flex: 1;
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--fg-soft);
+  }
+  .metrics {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 12.5px;
+    color: var(--fg-soft);
+  }
+  .metrics .dot { width: 3px; height: 3px; border-radius: 50%; background: currentColor; opacity: .5; }
+  .actions { display: flex; gap: 8px; margin-top: 2px; }
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    height: 34px;
+    padding: 0 12px;
+    font-size: 13.5px;
+    font-weight: 500;
+    text-decoration: none;
+    color: var(--fg-soft);
+    background: transparent;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    transition: color .18s, background .18s, border-color .18s, transform .18s;
+  }
+  .btn:hover { color: var(--fg); background: var(--bg-soft); border-color: var(--fg-soft); }
+  .btn-primary {
+    color: #fff;
+    background: var(--accent);
+    border-color: transparent;
+    box-shadow: 0 2px 8px rgba(79, 110, 247, .28);
+  }
+  .btn-primary:hover {
+    color: #fff;
+    background: #4058e0;
+    border-color: transparent;
+    transform: translateY(-1px);
+  }
+
+  .empty {
+    padding: 56px 0;
+    text-align: center;
+    font-size: 14px;
+    color: var(--fg-soft);
+  }
+  footer {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: space-between;
+    margin-top: 40px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+    font-size: 12.5px;
+    color: var(--fg-soft);
+  }
+  footer a { color: var(--accent); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 640px) {
+    .page { padding: 24px 16px; }
+    .hero { flex-direction: column; align-items: flex-start; }
+    .stats { width: 100%; }
+    .stat { flex: 1; min-width: 0; padding: 8px 10px; }
+    .stat b { font-size: 15px; }
+    .grid { grid-template-columns: 1fr; }
+    .toolbar { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .search { max-width: none; width: 100%; }
+  }
+
   </style>
 </head>
 
 <body>
-  <div class="container">
-    <a class="logo" href="https://github.com/ryanuo/userscripts" target="_blank" rel="noopener noreferrer">
-      <img src="./favicon.ico" alt="GitHub stars">
-    </a>
-    </a>
-    <h1>Userscripts 预览</h1>
-    <div class="grid">
-      
-        <div class="card">
-          <div class="filename">deepseek-usage-privacy</div>
-          <div class="meta">大小: 5.9 KB &nbsp;|&nbsp; 更新时间: 10/15/2026, 12:49:34 AM</div>
-          <div class="actions">
-            <a class="btn" href="./scripts/deepseek-usage-privacy.user.js" download>下载</a>
-            <a class="btn" href="./scripts/deepseek-usage-privacy.user.js" target="_blank">预览</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="filename">devtools-full-function-protection</div>
-          <div class="meta">大小: 3.5 KB &nbsp;|&nbsp; 更新时间: 10/15/2026, 12:49:34 AM</div>
-          <div class="actions">
-            <a class="btn" href="./scripts/devtools-full-function-protection.user.js" download>下载</a>
-            <a class="btn" href="./scripts/devtools-full-function-protection.user.js" target="_blank">预览</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="filename">page-description-generator</div>
-          <div class="meta">大小: 8.8 KB &nbsp;|&nbsp; 更新时间: 10/15/2026, 12:49:34 AM</div>
-          <div class="actions">
-            <a class="btn" href="./scripts/page-description-generator.user.js" download>下载</a>
-            <a class="btn" href="./scripts/page-description-generator.user.js" target="_blank">预览</a>
-          </div>
-        </div>
-        <div class="card">
-          <div class="filename">twitter-top-button</div>
-          <div class="meta">大小: 4.1 KB &nbsp;|&nbsp; 更新时间: 10/15/2026, 12:49:34 AM</div>
-          <div class="actions">
-            <a class="btn" href="./scripts/twitter-top-button.user.js" download>下载</a>
-            <a class="btn" href="./scripts/twitter-top-button.user.js" target="_blank">预览</a>
-          </div>
-        </div>
+  <div class="page">
+    <header class="hero">
+      <a class="brand" href="https://github.com/ryanuo/userscripts" target="_blank" rel="noopener noreferrer">
+        <img src="./favicon.ico" alt="Userscripts">
+        <span>
+          <h1>Userscripts</h1>
+          <p class="sub">自用油猴脚本集合 · 点「安装」由 Tampermonkey 接管</p>
+        </span>
+      </a>
+      <div class="stats">
+        <div class="stat"><b>4</b><span>个脚本</span></div>
+        <div class="stat"><b>22.9 KB</b><span>总大小</span></div>
+        <div class="stat"><b>2026-10-15</b><span>最近更新</span></div>
+      </div>
+    </header>
+
+    <div class="toolbar">
+      <label class="search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <input id="q" type="search" placeholder="搜索脚本名 / 文件 / 描述  按 / 聚焦" autocomplete="off">
+      </label>
+      <span class="count" id="count"></span>
     </div>
-    <footer>© 2025 Ryanuo · Userscripts Preview</footer>
+
+    <main class="grid">
+      <article class="card" data-text="deepseek 用量页金额隐藏 deepseek-usage-privacy 在 deepseek 开放平台用量页加一个「小眼睛」，一键把金额（充值余额、消费金额、图表 tooltip）显示为 ***，alt+m 切换，状态本地记忆">
+        <div class="card-head">
+          <h2>DeepSeek 用量页金额隐藏</h2>
+          <span class="tag">v1.1.0</span>
+        </div>
+        <code class="file">deepseek-usage-privacy.user.js</code>
+        <p class="desc">在 DeepSeek 开放平台用量页加一个「小眼睛」，一键把金额（充值余额、消费金额、图表 tooltip）显示为 ***，Alt+M 切换，状态本地记忆</p>
+        <div class="metrics">
+          <span>6.6 KB</span>
+          <span class="dot"></span>
+          <span>2026-10-15 08:56</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/deepseek-usage-privacy.user.js" target="_blank" rel="noopener noreferrer">安装</a>
+          <a class="btn" href="./scripts/deepseek-usage-privacy.user.js" download>下载</a>
+          <a class="btn" href="./scripts/deepseek-usage-privacy.user.js" target="_blank" rel="noopener noreferrer">源码</a>
+        </div>
+      </article>
+      <article class="card" data-text="devtools 全功能防护 devtools-full-function-protection 一站式解除网页的防调试、重定向、右键屏蔽，同时屏蔽 disable-devtool / devtools-detector，让 devtools 自由使用。">
+        <div class="card-head">
+          <h2>DevTools 全功能防护</h2>
+          <span class="tag">v2.0.1</span>
+        </div>
+        <code class="file">devtools-full-function-protection.user.js</code>
+        <p class="desc">一站式解除网页的防调试、重定向、右键屏蔽，同时屏蔽 disable-devtool / devtools-detector，让 DevTools 自由使用。</p>
+        <div class="metrics">
+          <span>3.5 KB</span>
+          <span class="dot"></span>
+          <span>2026-10-15 08:56</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/devtools-full-function-protection.user.js" target="_blank" rel="noopener noreferrer">安装</a>
+          <a class="btn" href="./scripts/devtools-full-function-protection.user.js" download>下载</a>
+          <a class="btn" href="./scripts/devtools-full-function-protection.user.js" target="_blank" rel="noopener noreferrer">源码</a>
+        </div>
+      </article>
+      <article class="card" data-text="页面描述生成器 page-description-generator 使用 ai 对当前页面内容进行描述分析，生成详细文字，支持快捷键和按钮触发，按钮带loading和折叠功能">
+        <div class="card-head">
+          <h2>页面描述生成器</h2>
+          <span class="tag">v1.1.1</span>
+        </div>
+        <code class="file">page-description-generator.user.js</code>
+        <p class="desc">使用 AI 对当前页面内容进行描述分析，生成详细文字，支持快捷键和按钮触发，按钮带loading和折叠功能</p>
+        <div class="metrics">
+          <span>8.8 KB</span>
+          <span class="dot"></span>
+          <span>2026-10-15 08:56</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/page-description-generator.user.js" target="_blank" rel="noopener noreferrer">安装</a>
+          <a class="btn" href="./scripts/page-description-generator.user.js" download>下载</a>
+          <a class="btn" href="./scripts/page-description-generator.user.js" target="_blank" rel="noopener noreferrer">源码</a>
+        </div>
+      </article>
+      <article class="card" data-text="twitter / x 回到顶部按钮 twitter-top-button 在 twitter / x 页面添加回到顶部按钮，支持快捷键 t">
+        <div class="card-head">
+          <h2>Twitter / X 回到顶部按钮</h2>
+          <span class="tag">v1.0.1</span>
+        </div>
+        <code class="file">twitter-top-button.user.js</code>
+        <p class="desc">在 Twitter / X 页面添加回到顶部按钮，支持快捷键 T</p>
+        <div class="metrics">
+          <span>4.1 KB</span>
+          <span class="dot"></span>
+          <span>2026-10-15 08:56</span>
+        </div>
+        <div class="actions">
+          <a class="btn btn-primary" href="https://raw.githubusercontent.com/ryanuo/userscripts/main/scripts/twitter-top-button.user.js" target="_blank" rel="noopener noreferrer">安装</a>
+          <a class="btn" href="./scripts/twitter-top-button.user.js" download>下载</a>
+          <a class="btn" href="./scripts/twitter-top-button.user.js" target="_blank" rel="noopener noreferrer">源码</a>
+        </div>
+      </article>
+    </main>
+    <p class="empty" id="empty" hidden>没有匹配的脚本</p>
+
+    <footer>
+      <span>本页由 <code>pnpm build</code> 自动生成于 2026-10-15 08:56</span>
+      <a href="https://github.com/ryanuo/userscripts" target="_blank" rel="noopener noreferrer">GitHub · ryanuo/userscripts</a>
+    </footer>
   </div>
+
+  <script>
+    (function () {
+      var q = document.getElementById('q')
+      var count = document.getElementById('count')
+      var empty = document.getElementById('empty')
+      var cards = Array.prototype.slice.call(document.querySelectorAll('.card'))
+
+      function run() {
+        var kw = q.value.trim().toLowerCase()
+        var shown = 0
+        cards.forEach(function (card) {
+          var hit = !kw || (card.getAttribute('data-text') || '').indexOf(kw) > -1
+          card.hidden = !hit
+          if (hit) shown++
+        })
+        count.textContent = shown + ' / ' + cards.length + ' 个脚本'
+        empty.hidden = shown !== 0
+      }
+
+      q.addEventListener('input', run)
+      document.addEventListener('keydown', function (e) {
+        if (e.key === '/' && document.activeElement !== q) {
+          e.preventDefault()
+          q.focus()
+        }
+      })
+      run()
+    })()
+  </script>
 </body>
 </html>

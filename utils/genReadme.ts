@@ -104,7 +104,7 @@ ${badge('脚本数量', String(fileInfos.length), 'success', 'code')}
 ${badge('总大小', totalSize, 'orange', 'files')}
 > 本表自动生成于 ${formatDate(new Date())} ，请勿手动修改。
 
-'| 脚本 | 描述 | 版本 | 大小 | 更新时间 |',
+| 脚本 | 描述 | 版本 | 大小 | 更新时间 |
 |------|------|------|------|----------|
 ${tableRows}
 

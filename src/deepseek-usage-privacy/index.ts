@@ -3,8 +3,9 @@ const STORAGE_KEY = 'dsm:hide-money' // localStorage 记忆开关状态
 const TOGGLE_ID = 'dsm-money-toggle' // 小眼睛按钮 id
 const STYLE_ID = 'dsm-money-style' // 注入样式 id
 const BODY_CLASS = 'dsm-hide-money' // 打开时挂在 body 上
-const MARK_ATTR = 'data-dsm-money' // 命中的金额元素标记
+const MARK_ATTR = 'data-dsm-money' // 被遮挡元素上的标记（调试/自检用）
 const USAGE_ROOT = '[data-usage-layout-root]' // 用量页容器（稳定 data 属性）
+const MASK_TEXT = '***' // 遮挡后显示的占位文本
 // 金额文本：¥3.86 / ¥ 1,234.56，兼容全角 ￥
 const MONEY_RE = /^[¥￥]\s?\d[\d,]*(?:\.\d+)?$/
 
@@ -12,10 +13,6 @@ const ICON_EYE = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" st
 const ICON_EYE_OFF = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M1.8 12S5.6 5.8 12 5.8 22.2 12 22.2 12 18.4 18.2 12 18.2 1.8 12 1.8 12Z"/><circle cx="12" cy="12" r="3.1"/><path d="M3.5 3.5l17 17"/></svg>'
 
 const CSS = `
-body.${BODY_CLASS} [${MARK_ATTR}] {
-  visibility: hidden !important;
-  user-select: none !important;
-}
 #${TOGGLE_ID} {
   display: inline-flex;
   align-items: center;
@@ -47,7 +44,8 @@ body.${BODY_CLASS} [${MARK_ATTR}] {
 
 // ========== 开关状态 ==========
 let hideMoney = readState()
-let marked = new Set<Element>()
+// 被换成 *** 的文本节点 -> 它的真实金额（关掉时原样还回去）
+const masked = new Map<Text, string>()
 let pending = false
 
 function readState(): boolean {
@@ -94,7 +92,7 @@ function applyState(): void {
   if (!btn)
     return
   btn.innerHTML = hideMoney ? ICON_EYE_OFF : ICON_EYE
-  btn.title = hideMoney ? '金额已隐藏，点了或 Alt+M 显示' : '隐藏页面金额（Alt+M）'
+  btn.title = hideMoney ? `金额已显示为 ${MASK_TEXT}，点了或 Alt+M 恢复` : '隐藏页面金额（Alt+M）'
   btn.setAttribute('aria-label', btn.title)
   btn.setAttribute('aria-pressed', String(hideMoney))
 }
@@ -103,6 +101,65 @@ function toggle(): void {
   hideMoney = !hideMoney
   writeState()
   applyState()
+  scan() // 点了立刻生效，不等下一帧
+}
+
+// ========== 遮挡：把金额文本换成 *** ==========
+function isMoney(value: string): boolean {
+  return (value[0] === '¥' || value[0] === '￥') && MONEY_RE.test(value)
+}
+
+function restoreAll(): void {
+  masked.forEach((real, node) => {
+    if (node.isConnected)
+      node.nodeValue = real
+    node.parentElement?.removeAttribute(MARK_ATTR)
+  })
+  masked.clear()
+}
+
+function scan(): void {
+  if (!hideMoney) {
+    restoreAll()
+    return
+  }
+
+  const seen = new Set<Text>()
+  // 值还是 *** 的说明没人动过，记录继续留着
+  masked.forEach((real, node) => {
+    if (!node.isConnected) {
+      masked.delete(node)
+      return
+    }
+    if (node.nodeValue === MASK_TEXT)
+      seen.add(node)
+  })
+
+  // 全量扫一遍：新出现的金额，以及遮挡期间被页面刷新成真实金额的节点
+  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
+  let node = walker.nextNode() as Text | null
+  while (node) {
+    const value = node.nodeValue || ''
+    if (isMoney(value.trim()) && !node.parentElement?.closest(`#${TOGGLE_ID}`)) {
+      seen.add(node)
+      masked.set(node, value) // 关键：页面自己写入的新金额当成真实值存下来
+    }
+    node = walker.nextNode() as Text | null
+  }
+
+  // 页面把节点复用成别的文本了：清掉记录和标记，不动它的新内容
+  masked.forEach((real, node) => {
+    if (seen.has(node))
+      return
+    masked.delete(node)
+    node.parentElement?.removeAttribute(MARK_ATTR)
+  })
+
+  masked.forEach((real, node) => {
+    if (node.nodeValue !== MASK_TEXT)
+      node.nodeValue = MASK_TEXT
+    node.parentElement?.setAttribute(MARK_ATTR, '')
+  })
 }
 
 function ensureToggle(): void {
@@ -133,36 +190,10 @@ function ensureToggle(): void {
   applyState()
 }
 
-// ========== 打标：给「装了金额的」元素打标记，靠 CSS 遮挡 ==========
-function markMoney(): void {
-  const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT)
-  const seen = new Set<Element>()
-  let node = walker.nextNode()
-  while (node) {
-    const text = (node.nodeValue || '').trim()
-    if ((text[0] === '¥' || text[0] === '￥') && MONEY_RE.test(text)) {
-      const el = node.parentElement
-      if (el && !el.closest(`#${TOGGLE_ID}`)) {
-        seen.add(el)
-        if (!el.hasAttribute(MARK_ATTR))
-          el.setAttribute(MARK_ATTR, '')
-      }
-    }
-    node = walker.nextNode()
-  }
-  // 上一轮标记过、这轮不再命中的（React 复用节点后文本变了）要摘掉
-  marked.forEach((el) => {
-    if (!seen.has(el))
-      el.removeAttribute(MARK_ATTR)
-  })
-  marked = seen
-}
-
 // ========== 调度：一帧内合并多次 DOM 变化 ==========
 function sync(): void {
   ensureToggle()
-  if (hideMoney)
-    markMoney()
+  scan()
 }
 
 function scheduleSync(): void {
@@ -195,18 +226,20 @@ window.addEventListener('storage', (e: StorageEvent) => {
   if (e.key === STORAGE_KEY) {
     hideMoney = readState()
     applyState()
+    scan()
   }
 })
 
 // ========== 主流程 ==========
 injectStyle()
 applyState()
+scan()
 scheduleSync()
-// 页面数据是异步拉的、图表 tooltip 是悬停才插入的，靠 observer 跟着重新打标
+// 页面数据是异步拉的、图表 tooltip 是悬停才插入的，靠 observer 跟着重新扫描
 new MutationObserver(scheduleSync).observe(document.documentElement, {
   childList: true,
   subtree: true,
   characterData: true,
 })
 
-console.warn('[DeepSeek 金额隐藏] 已加载：点用量页右上角小眼睛或按 Alt+M 切换')
+console.warn(`[DeepSeek 金额隐藏] 已加载：点用量页右上角小眼睛或按 Alt+M，金额会显示为 ${MASK_TEXT}`)
