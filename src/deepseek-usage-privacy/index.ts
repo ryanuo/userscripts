@@ -44,6 +44,16 @@ const CSS = `
   background-color: #fff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
 }
+/* 遮挡后把 *** 挪回数字所在的光学中线。
+   星号是贴 em 框上部的字符、数字贴基线，两者墨迹中心差 ≈ 0.145em
+   （站点字体 Inter Medium 实测：29px 卡片值差 4px），而 line-height / flex 居中
+   只摆行盒、摆不动字形本身，只能做相对位移；em 让 29px 卡片值、16px tooltip、
+   14px 图表标题一起适配。实测残差：29px 0px、16px 0px、14px 0.25px。
+   相对定位只影响绘制，不动布局：CNY 单位、卡片高度、flex 基线都不变。 */
+body.${BODY_CLASS} [${MARK_ATTR}] {
+  position: relative;
+  top: 0.145em;
+}
 `
 
 // ========== 开关状态 ==========
