@@ -17,5 +17,5 @@ export function readVersionCache(cachePath: string): ScriptVersionCache {
 }
 
 export function writeVersionCache(cachePath: string, cache: ScriptVersionCache) {
-  fs.writeFileSync(cachePath, JSON.stringify(cache, null, 2), 'utf8')
+  fs.writeFileSync(cachePath, `${JSON.stringify(cache, null, 2)}\n`, 'utf8')
 }
